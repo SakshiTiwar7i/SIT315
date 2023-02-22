@@ -1,0 +1,35 @@
+// C++ code
+
+// motion sensor connected to digital pin 2
+const int Motion_Sensor = 2;  
+
+// initial state of sensor is LOW
+int Motion_State = LOW;
+
+void setup() {
+  // initialize the LED pin as an output:
+  pinMode(LED_BUILTIN, OUTPUT);
+  // initialize the Motion Sensor as an input:
+  pinMode(Motion_Sensor, INPUT);
+  // Initialize serial communication
+  Serial.begin(9600);
+}
+
+void loop() {
+  // read the state of the MotionSenor value:
+  Motion_State = digitalRead(Motion_Sensor);
+
+  // turn on led if motion detected
+  if (Motion_State == HIGH) {
+    Serial.println("Motion detected");
+    digitalWrite(LED_BUILTIN, HIGH);
+    Serial.println("LED turned on");
+  }
+  // turn off led if motion not detected
+  else {
+    Serial.println("Motion not detected");
+    digitalWrite(LED_BUILTIN, LOW);
+    Serial.println("LED turned off");
+  }
+  delay(1000);
+}
