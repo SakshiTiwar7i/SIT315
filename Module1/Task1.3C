@@ -1,0 +1,45 @@
+const int sensormotion = 2;
+const int sensormoisture = 3;
+const int ledred = 8;
+const int ledwhite = 9;
+
+volatile int motion_state = LOW;
+
+void setup() {
+  pinMode(ledred, OUTPUT);
+  pinMode(ledwhite, OUTPUT);
+  pinMode(sensormotion, INPUT);
+  pinMode(sensormoisture, INPUT);
+
+  Serial.begin(9600);
+  attachInterrupt(digitalPinToInterrupt(sensormotion), motionInterrupt, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(sensormoisture), moistureInterrupt, CHANGE);
+}
+
+void loop() {
+}
+
+void motionInterrupt() {
+  motion_state = digitalRead(sensormotion);
+
+  if (motion_state == HIGH) {
+    Serial.println("Motion present");
+    digitalWrite(ledwhite, HIGH);
+    Serial.println("LED on");
+  }
+  else {
+    Serial.println("Motion absent");
+    digitalWrite(ledwhite, LOW);
+    Serial.println("LED off");
+  }
+}
+
+void moistureInterrupt() {
+  int moisture = analogRead(sensormoisture);
+  Serial.print("Moisture level: ");
+  Serial.println(moisture);
+  digitalWrite(ledred, HIGH);
+  delay(1000);
+  digitalWrite(ledred, LOW);
+}
+
